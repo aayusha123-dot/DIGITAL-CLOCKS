@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Running Digital Clock</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #1a1a1a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #00ff00;
+            overflow: hidden;
+        }
+
+        .clock-container {
+            background: #000;
+            padding: 2rem;
+            border-radius: 10px;
+            border: 2px solid #00ff00;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+
+        .digital-clock {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #00ff00;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .colon {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        .date-display {
+            font-size: 1.2rem;
+            color: #00ff00;
+            margin-bottom: 0.5rem;
+        }
+
+        .status {
+            font-size: 0.9rem;
+            color: #00ff00;
+            opacity: 0.8;
+        }
+
+        .updating {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .digital-clock {
+                font-size: 3rem;
+            }
+            .date-display {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .digital-clock {
+                font-size: 2.5rem;
+            }
+            .clock-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="clock-container">
+        <div class="digital-clock" id="clock">
+            00:00:00
+        </div>
+        <div class="date-display" id="date">
+            Loading date...
+        </div>
+        <div class="status">
+            <span class="updating">●</span> Clock is running and updating every second
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            
+            // Get time components
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            
+            // Update clock display
+            document.getElementById('clock').innerHTML = 
+                hours + '<span class="colon">:</span>' + 
+                minutes + '<span class="colon">:</span>' + 
+                seconds;
+            
+            // Update date
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            document.getElementById('date').textContent = now.toLocaleDateString('en-US', options);
+        }
+
+        // Update immediately and set interval
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Confirm it's running
+        console.log('Clock started at: ' + new Date().toLocaleTimeString());
+    </script>
+</body>
+</html>
+
